@@ -1,0 +1,91 @@
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #1a1a2e;
+  color: #4d4c4c;
+  font-family: 'IBM Plex Sans', Arial, sans-serif;/* Arial, sans-serif */ 
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+  color: #00d4ff;
+  margin-bottom: 30px;
+  font-size: 28px;
+}
+
+h2 {
+  color: #00d4ff;
+  margin-bottom: 10px;
+}
+
+
+#heatmap-container {
+  width: 100%;
+}
+
+#heatmap {
+  width: 100%;
+}
+
+#stock-info {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background-color: #16213e;
+  padding: 15px 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+#company-logo {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  background: white;
+  border-radius: 4px;
+  padding: 4px;
+}
+
+#company-name {
+  font-size: 22px;
+  color: #ffffff;
+}
+
+#company-industry {
+  color: #aaaaaa;
+  font-size: 14px;
+}
+
+#company-marketcap {
+  color: #00d4ff;
+  font-size: 14px;
+}
+
+#candlestick-container {
+  margin-top: 10px;
+}
+
+#candlestick {
+  width: 100%;
+  height: 500px;
+}
+
+#back-bar {
+  padding: 12px 20px;
+}
+
+#back-btn {
+  color: #4fc3f7;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+#back-btn:hover {
+  text-decoration: underline;
+}

@@ -1,0 +1,73 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: postgres-container
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin1234
+      POSTGRES_DB: final_project
+      PGDATA: /var/lib/postgresql/data/pgdata15
+    networks:
+      - bootcamp-network
+    ports:
+      - "5532:5432"
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data/pgdata
+
+  redis:
+    image: redis:7
+    container_name: redis-container
+    networks:
+      - bootcamp-network
+    ports:
+      - "6479:6379"
+    volumes:
+      - ./redis_data:/data
+
+  data-provider-app:
+    image: project-data-provider:0.0.1
+    container_name: data-provider-app
+    networks:
+      - bootcamp-network
+    ports:
+      - "8101:8101"
+
+  stock-data-app:
+    image: project-stock-data:0.0.1
+    container_name: stock-data-app
+    networks:
+      - bootcamp-network
+    ports:
+      - "8102:8102"
+    depends_on:
+      - postgres
+      - redis
+      - data-provider-app
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-container:5432/final_project
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: admin1234
+      SPRING_DATA_REDIS_HOST: redis-container
+      SPRING_DATA_REDIS_PORT: 6379
+      SPRING_APP_DATA_PROVIDER_DOMAIN: data-provider-app
+      SPRING_APP_DATA_PROVIDER_PORT: 8101
+
+  heatmap-ui-app:
+    image: project-heatmap-ui:0.0.1
+    container_name: heatmap-ui-app
+    networks:
+      - bootcamp-network
+    ports:
+      - "8100:8100"
+    depends_on:
+      - stock-data-app
+    environment:
+      APP_STOCK_DATA_DOMAIN: stock-data-app
+      APP_STOCK_DATA_PORT: 8102
+
+volumes:
+  redis_data:
+
+networks:
+  bootcamp-network:
+    driver: bridge
