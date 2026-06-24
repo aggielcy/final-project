@@ -1,0 +1,18 @@
+# Assume the database is ready
+server:
+    port: 8101    
+
+
+api:
+  finnhub:
+    domain: "finnhub.io"
+    vers: "api/v1"
+    endpoints:
+      chart: "stock/profile2"
+    key: "d8nqe89r01qvvn9a3070d8nqe89r01qvvn9a307g"
+
+
+
+
+
+
