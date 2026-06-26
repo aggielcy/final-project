@@ -5,24 +5,57 @@
   <title>Stock Detail</title>
   <link rel="stylesheet" href="/css/style.css">
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-
-
 </head>
-<body>
-  <div id="back-bar">
-    <a href="/" id="back-btn">← Back to Heatmap</a>
-  </div>
+<body class="stock-page">
 
-  <div id="stock-info">
-    <img id="company-logo" src="" alt="logo" />
-    <div id="company-details">
-      <h2 id="company-name"></h2>
-      <p id="company-industry"></p>
-      <p id="company-marketcap"></p>
+  <div id="stock-header">
+    <a href="/index.html" id="back-btn">← Back to Heatmap</a>
+
+    <div id="stock-hero">
+      <div id="logo-wrapper">
+        <img id="company-logo" src="" alt="logo" />
+      </div>
+      <div id="stock-name-block">
+        <h1 id="company-name"></h1>
+        <p id="stock-symbol-label"></p>
+      </div>
+    </div>
+
+    <div id="stock-price-row">
+      <span id="stock-price"></span>
+      <div id="stock-change-block">
+        <span id="stock-change-amt"></span>
+        <span id="stock-change-pct"></span>
+      </div>
+    </div>
+
+    <div id="stock-stats">
+      <div class="stat-item">
+        <div class="stat-value" id="stat-marketcap">—</div>
+        <div class="stat-label">MARKET CAP</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value" id="stat-industry">—</div>
+        <div class="stat-label">INDUSTRY</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value" id="stat-shares">—</div>
+        <div class="stat-label">SHARES OUTSTANDING</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value" id="stat-52w">—</div>
+        <div class="stat-label">52W RANGE</div>
+      </div>
     </div>
   </div>
 
-  <h2 id="candlestick-title"></h2>
+  <div id="time-range-bar">
+    <button class="range-btn" data-range="1W">1W</button>
+    <button class="range-btn" data-range="1M">1M</button>
+    <button class="range-btn" data-range="3M">3M</button>
+    <button class="range-btn active" data-range="1Y">1Y</button>
+  </div>
+
   <div id="candlestick"></div>
 
   <script src="/js/stock.js"></script>

@@ -3,9 +3,7 @@ package com.finalproject.project_stock_data.service.impl;
 
 import java.math.BigDecimal;
 import java.time.Duration;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -89,7 +87,7 @@ public class StockDataService implements StockOperation {
                                         this.redisHelper.set("pct:"
                                                         + stock.getSymbol(),
                                                         quote.getCurrentMarketPriceChangePercentage(),
-                                                        Duration.ofMinutes(50));
+                                                        Duration.ofDays(365)); //!
                                 }
                                 Thread.sleep(1200);
                         } catch (InterruptedException e) {
