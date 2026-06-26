@@ -10,7 +10,7 @@ public class OhlcScheduler {
   @Autowired
   private OhlcUpdateService ohlcUpdateService;
 
-  @Scheduled(cron = "0 0 6 * * *")
+ // @Scheduled(cron = "0 0 6 * * *")
   public void scheduleOhlcUpdate() {
     System.out.println("Starting nightly OHLC update...");
     this.ohlcUpdateService.updateLastNightOhlc();

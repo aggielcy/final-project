@@ -17,73 +17,110 @@ import com.finalproject.project_heatmap_ui.service.StockOperation;
 
 @Service
 public class StockDataService implements StockOperation {
-  @Autowired
-  private RestTemplate restTemplate;
-  @Value("${app.stock-data.domain}")
-  private String domain;
-  @Value("${app.stock-data.port}")
-  private String port;
+    @Autowired
+    private RestTemplate restTemplate;
+    @Value("${app.stock-data.domain}")
+    private String domain;
+    @Value("${app.stock-data.port}")
+    private String port;
 
 
-  // http://localhost:8080/symbol/AMZN
-  @Override
-  public StockOhlcDTO getStockOhlcDto(String symbol) {
+    @Override
+    public StockEntityDTO getSymbolFromCache() {
+        return this.getSymbol();
+    }
 
-    String url = UriComponentsBuilder.newInstance() //
-        .scheme("http") //
-        .host(this.domain) //
-        .port(this.port)//
-        .path("/symbol/" + symbol).toUriString();
-    System.out.println("url=" + url);
+    @Override
+    public StockOhlcDTO getStockOhlcDtoFromCache(String symbol) {
+        String url = UriComponentsBuilder.newInstance().scheme("http")
+                .host(this.domain).port(this.port).path("/cache/ohlc/" + symbol)
+                .toUriString();
+        System.out.println("url=" + url);
 
-    StockOhlcDto stockOhlcDto =
-        this.restTemplate.getForObject(url, StockOhlcDto.class);
+        StockOhlcDto stockOhlcDto =
+                this.restTemplate.getForObject(url, StockOhlcDto.class);
+        if (stockOhlcDto == null)
+            return null;
 
-    List<StockOhlcDTO.StockOhlcData> ohlcDataList = stockOhlcDto.getStockOhlcDatas().stream()
-            .map(e -> StockOhlcDTO.StockOhlcData.builder()
-                .tradeDate(e.getTradeDate())
-                .high(e.getHigh())
-                .low(e.getLow())
-                .open(e.getOpen())
-                .close(e.getClose())
-                .volume(e.getVolume())
-                .build())
-            .toList();
-    
+        List<StockOhlcDTO.StockOhlcData> ohlcDataList = stockOhlcDto
+                .getStockOhlcDatas().stream()
+                .map(e -> StockOhlcDTO.StockOhlcData.builder()
+                        .tradeDate(e.getTradeDate()).high(e.getHigh())
+                        .low(e.getLow()).open(e.getOpen()).close(e.getClose())
+                        .volume(e.getVolume()).build())
+                .toList();
 
-    return StockOhlcDTO.builder()//
-    .stockId(stockOhlcDto.getStockId()) //
-        .symbol(stockOhlcDto.getSymbol()) //
-        .companyName(stockOhlcDto.getCompanyName()) //
-        .marketCap(stockOhlcDto.getMarketCap()) //
-        .industry(stockOhlcDto.getIndustry())
-        .shareOutstanding(stockOhlcDto.getShareOutstanding())//
-        .logo(stockOhlcDto.getLogo())
-        .stockOhlcDatas(ohlcDataList)
-        .currentPriceChangePercent(stockOhlcDto.getCurrentPriceChangePercent()).build();
-  } // !
+        return StockOhlcDTO.builder().stockId(stockOhlcDto.getStockId())
+                .symbol(stockOhlcDto.getSymbol())
+                .companyName(stockOhlcDto.getCompanyName())
+                .marketCap(stockOhlcDto.getMarketCap())
+                .industry(stockOhlcDto.getIndustry())
+                .shareOutstanding(stockOhlcDto.getShareOutstanding())
+                .logo(stockOhlcDto.getLogo()).stockOhlcDatas(ohlcDataList)
+                .currentPriceChangePercent(
+                        stockOhlcDto.getCurrentPriceChangePercent())
+                .build();
+    }
 
-  // http://localhost:8101/data/symbol
 
-  @Override
-  public StockEntityDTO getSymbol() {
 
-    String url = UriComponentsBuilder.newInstance() //
-        .scheme("http") //
-        .host(this.domain) //
-        .port(this.port)//
-        .path("/data/symbol") //
-        .toUriString();
-    System.out.println("url=" + url);
+    // http://localhost:8080/symbol/AMZN
+    @Override
+    public StockOhlcDTO getStockOhlcDto(String symbol) {
 
-    List<StocksEntity> stockList = Arrays.asList(this.restTemplate
-        .getForObject(url, StockEntityDto.StocksEntity[].class));
+        String url = UriComponentsBuilder.newInstance() //
+                .scheme("http") //
+                .host(this.domain) //
+                .port(this.port)//
+                .path("/symbol/" + symbol).toUriString();
+        System.out.println("url=" + url);
 
-    List<String> symbols =
-        stockList.stream().map(StocksEntity::getSymbol).toList();
+        StockOhlcDto stockOhlcDto =
+                this.restTemplate.getForObject(url, StockOhlcDto.class);
 
-    return StockEntityDTO.builder().symbol(symbols).build();
-  }
+        List<StockOhlcDTO.StockOhlcData> ohlcDataList = stockOhlcDto
+                .getStockOhlcDatas().stream()
+                .map(e -> StockOhlcDTO.StockOhlcData.builder()
+                        .tradeDate(e.getTradeDate()).high(e.getHigh())
+                        .low(e.getLow()).open(e.getOpen()).close(e.getClose())
+                        .volume(e.getVolume()).build())
+                .toList();
+
+
+        return StockOhlcDTO.builder()//
+                .stockId(stockOhlcDto.getStockId()) //
+                .symbol(stockOhlcDto.getSymbol()) //
+                .companyName(stockOhlcDto.getCompanyName()) //
+                .marketCap(stockOhlcDto.getMarketCap()) //
+                .industry(stockOhlcDto.getIndustry())
+                .shareOutstanding(stockOhlcDto.getShareOutstanding())//
+                .logo(stockOhlcDto.getLogo()).stockOhlcDatas(ohlcDataList)
+                .currentPriceChangePercent(
+                        stockOhlcDto.getCurrentPriceChangePercent())
+                .build();
+    } // !
+
+    // http://localhost:8101/data/symbol
+
+    @Override
+    public StockEntityDTO getSymbol() {
+
+        String url = UriComponentsBuilder.newInstance() //
+                .scheme("http") //
+                .host(this.domain) //
+                .port(this.port)//
+                .path("/data/symbol") //
+                .toUriString();
+        System.out.println("url=" + url);
+
+        List<StocksEntity> stockList = Arrays.asList(this.restTemplate
+                .getForObject(url, StockEntityDto.StocksEntity[].class));
+
+        List<String> symbols =
+                stockList.stream().map(StocksEntity::getSymbol).toList();
+
+        return StockEntityDTO.builder().symbol(symbols).build();
+    }
 
 
 

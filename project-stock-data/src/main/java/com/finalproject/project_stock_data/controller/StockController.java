@@ -11,27 +11,28 @@ import com.finalproject.project_stock_data.entity.StocksEntity;
 
 public interface StockController {
 
-  //Retrieve OHLCV data per stock from DB
+  // Retrieve OHLCV data per stock from DB
   @GetMapping("/symbol/{symbol}")
   StockOhlcDTO getStockBySymbol(@PathVariable String symbol);
 
 
-  //Retrieve all stock company profile data (calls data-provider-app)
+  // Retrieve all stock company profile data (calls data-provider-app)
   @GetMapping("/data/profile")
   CompanyProfileDTO getCompanyDataDto(@RequestParam String symbol);
 
-  //Retrieve all stock real-time quote data (calls data-provider-app)
+  // Retrieve all stock real-time quote data (calls data-provider-app)
   @GetMapping("/data/quote")
   QuoteDTO getQuote(@RequestParam String symbol);
 
- //Retrieve all stock symbols from DB
+  // Retrieve all stock symbols from DB
   @GetMapping("/data/symbol")
-  List <StocksEntity> getSymbol();
+  List<StocksEntity> getSymbol();
+
+  // frontend read redis only
+  @GetMapping("/cache/ohlc/{symbol}")
+  StockOhlcDTO getStockFromCache(@PathVariable String symbol);
 
 
- 
-
- 
 
 }
 

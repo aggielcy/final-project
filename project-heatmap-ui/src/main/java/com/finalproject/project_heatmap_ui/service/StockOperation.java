@@ -10,6 +10,8 @@ public interface StockOperation {
   StockEntityDTO getSymbol(); // !
 
 
+  StockEntityDTO getSymbolFromCache();
+  StockOhlcDTO getStockOhlcDtoFromCache(String symbol);
 
 
 

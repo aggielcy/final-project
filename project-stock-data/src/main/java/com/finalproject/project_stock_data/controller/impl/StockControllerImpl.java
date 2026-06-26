@@ -30,7 +30,8 @@ public class StockControllerImpl implements StockController {
 
   @Override
   public CompanyProfileDTO getCompanyDataDto(@RequestParam String symbol) {
-    CompanyProfileDto profileDto = this.stockOperation.getCompanyDataDto(symbol);
+    CompanyProfileDto profileDto =
+        this.stockOperation.getCompanyDataDto(symbol);
     return this.dtoMapper.map(profileDto);
   }
 
@@ -40,9 +41,14 @@ public class StockControllerImpl implements StockController {
     return this.dtoMapper.map(quoteDto);
   }
 
-   @Override
+  @Override
   public List<StocksEntity> getSymbol() {
     return this.stockOperation.getSymbol();
+  }
+
+  @Override
+  public StockOhlcDTO getStockFromCache(@PathVariable String symbol) {
+    return this.stockOperation.getStockOhlcFromCache(symbol);
   }
 
 

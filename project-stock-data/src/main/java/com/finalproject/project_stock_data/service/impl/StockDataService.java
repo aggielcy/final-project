@@ -40,20 +40,48 @@ public class StockDataService implements StockOperation {
         @Value("${spring.app.data-provider.port}")
         private String port;
 
+        @Override
+        public StockOhlcDTO getStockOhlcFromCache(String symbol) {
+                String redisKey = "stock:" + symbol;
+                StockOhlcDTO cachedDto = this.redisHelper.get(redisKey,
+                                StockOhlcDTO.class);
+                if (cachedDto != null) {
+                        BigDecimal livePct = this.redisHelper
+                                        .get("pct:" + symbol, BigDecimal.class);
+                        if (livePct != null) {
+                                cachedDto.setCurrentPriceChangePercent(livePct);
+                        }
+                }
+                return cachedDto;
+        }
 
         // http://localhost:8080/provider/profile?symbol=AAPL
 
         @Override
         public CompanyProfileDto getCompanyDataDto(String symbol) {
+                String redisKey = "profile:" + symbol;
+
+                // 1. Try Redis first
+                CompanyProfileDto cached = this.redisHelper.get(redisKey,
+                                CompanyProfileDto.class);
+                if (cached != null) {
+                        return cached;
+                }
+
+                // 2. Cache miss → call data-provider
                 String url = UriComponentsBuilder.newInstance().scheme("http")
-                                .host(this.domain) //
-                                .port(this.port)//
-                                .path("/provider/profile") //
-                                .queryParam("symbol", symbol) //
-                                .toUriString();
+                                .host(this.domain).port(this.port)
+                                .path("/provider/profile")
+                                .queryParam("symbol", symbol).toUriString();
                 System.out.println("url=" + url);
                 CompanyProfileDto companyProfileDto = this.restTemplate
                                 .getForObject(url, CompanyProfileDto.class);
+
+                // 3. Save to Redis for 365 days
+                this.redisHelper.set(redisKey, companyProfileDto,
+                                Duration.ofDays(365));
+
+                // 4. Return result
                 return companyProfileDto;
         }
 
@@ -87,7 +115,7 @@ public class StockDataService implements StockOperation {
                                         this.redisHelper.set("pct:"
                                                         + stock.getSymbol(),
                                                         quote.getCurrentMarketPriceChangePercentage(),
-                                                        Duration.ofDays(365)); //!
+                                                        Duration.ofDays(365)); // !
                                 }
                                 Thread.sleep(1200);
                         } catch (InterruptedException e) {
@@ -116,7 +144,7 @@ public class StockDataService implements StockOperation {
                         BigDecimal livePct = this.redisHelper
                                         .get("pct:" + symbol, BigDecimal.class);
                         if (livePct != null) {
-                                cachedDto.setCurrentPriceChangePercent(livePct); //!
+                                cachedDto.setCurrentPriceChangePercent(livePct); // !
                         }
                         return cachedDto;
                 }
@@ -159,7 +187,7 @@ public class StockDataService implements StockOperation {
                 this.redisHelper.set(redisKey, stockohlcdto,
                                 Duration.ofHours(24));
 
-                //! 4. Set live % change
+                // ! 4. Set live % change
                 BigDecimal livePct = this.redisHelper.get("pct:" + symbol,
                                 BigDecimal.class);
                 if (livePct != null) {

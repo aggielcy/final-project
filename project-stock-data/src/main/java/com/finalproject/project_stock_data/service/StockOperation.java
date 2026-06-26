@@ -22,5 +22,7 @@ public interface StockOperation {
 
   List <StocksEntity> getSymbol();
 
+  StockOhlcDTO getStockOhlcFromCache(String symbol);
+
 
 }

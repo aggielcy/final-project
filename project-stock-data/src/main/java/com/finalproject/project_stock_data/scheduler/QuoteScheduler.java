@@ -11,7 +11,7 @@ public class QuoteScheduler {
     @Autowired
     private StockOperation stockOperation;
 
-    @Scheduled(initialDelay = 0, fixedDelay = 300000)
+ //   @Scheduled(initialDelay = 0, fixedDelay = 300000)
     public void scheduleQuoteRefresh() {
         System.out.println("Starting quote refresh...");
         this.stockOperation.refreshAllQuotes();
