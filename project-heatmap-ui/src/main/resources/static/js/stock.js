@@ -66,7 +66,7 @@ function renderChart(ohlcs) {
 async function loadStock() {
   if (!symbol) { document.body.innerHTML = '<p style="color:#fff;padding:40px">No symbol provided.</p>'; return; }
 
-  const res = await fetch(`/ui/ohlc?symbol=${symbol}`);
+  const res = await fetch(`/ui/cache/ohlc?symbol=${symbol}`);
   const stock = await res.json();
 
   document.title = `${symbol} - Stock Detail`;

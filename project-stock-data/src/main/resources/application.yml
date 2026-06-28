@@ -1,14 +1,12 @@
-
 # Assume the database is ready
 server:
-  port: 8102
+  port: ${PORT:8102}
 
 spring:
   datasource:
-    driver-class-name: org.postgresql.Driver
-    url: "jdbc:postgresql://localhost:5432/final_project"
-    username: postgres
-    password: admin1234
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
 
   jpa:
     show-sql: true
@@ -17,10 +15,14 @@ spring:
 
   data:
     redis:
-      host: localhost
+      host: ${REDIS_HOST}
       port: 6379
+      password: ${REDIS_PASSWORD}
+      ssl:
+        enabled: true
       
   app:
     data-provider:
-      domain: localhost
-      port: 8101
+      domain: ${DATA_PROVIDER_DOMAIN:localhost}
+      port: ${DATA_PROVIDER_PORT:8101}
+

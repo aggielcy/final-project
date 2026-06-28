@@ -1,8 +1,8 @@
 
 server:
-  port: 8100
+  port: ${PORT:8100}
 
 app:
   stock-data:
-    domain: localhost
-    port: 8102
+    domain: ${STOCK_DATA_DOMAIN:localhost}
+    port: ${STOCK_DATA_PORT:8102}

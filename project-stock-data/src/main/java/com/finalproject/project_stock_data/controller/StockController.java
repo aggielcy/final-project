@@ -28,12 +28,19 @@ public interface StockController {
   @GetMapping("/data/symbol")
   List<StocksEntity> getSymbol();
 
+
   // frontend read redis only
   @GetMapping("/cache/ohlc/{symbol}")
   StockOhlcDTO getStockFromCache(@PathVariable String symbol);
 
 
+  // since stopping scheduler, need to cache in redis one time through postman
+  @GetMapping("/cache/allquote")
+  void refreshAllQuotes();
 
+  // since stopping scheduler, need to cache in redis one time through postman
+  @GetMapping("/cache/allohlc")
+  void refreshAllOhlc();
 }
 
 

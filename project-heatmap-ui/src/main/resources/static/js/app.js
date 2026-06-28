@@ -232,4 +232,4 @@ function showTooltip(stock, event) {
 }
 
 loadHeatmap();
-setInterval(loadHeatmap, 60000);
+// setInterval(loadHeatmap, 60000);

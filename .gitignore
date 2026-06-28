@@ -9,8 +9,18 @@ build/
 # Virtual environments
 bootcamp-env/
 
-# Jupyter Notebook checkpoints
+# Jupyter Notebooks
+*.ipynb
 .ipynb_checkpoints/
 
 # VS Code
 .vscode/
+
+# Environment secrets
+.env
+
+# Maven build output
+target/
+
+# Docker
+**/Dockerfile

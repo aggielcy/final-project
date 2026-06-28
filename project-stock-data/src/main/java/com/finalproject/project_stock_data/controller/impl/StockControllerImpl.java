@@ -51,6 +51,16 @@ public class StockControllerImpl implements StockController {
     return this.stockOperation.getStockOhlcFromCache(symbol);
   }
 
+  // !
+  @Override
+  public void refreshAllQuotes() {
+    this.stockOperation.refreshAllQuotes();
+  }
 
+  //!
+  @Override
+  public void refreshAllOhlc() {
+    this.stockOperation.refreshAllOhlc();
+  }
 
 }

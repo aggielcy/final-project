@@ -1,6 +1,6 @@
 # Assume the database is ready
 server:
-    port: 8101    
+    port: ${PORT:8101}
 
 
 api:
@@ -9,7 +9,7 @@ api:
     vers: "api/v1"
     endpoints:
       chart: "stock/profile2"
-    key: "d8nqe89r01qvvn9a3070d8nqe89r01qvvn9a307g"
+    key: ${FINNHUB_API_KEY}
 
 
 

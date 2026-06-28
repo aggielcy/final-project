@@ -101,7 +101,7 @@ public class StockDataService implements StockOperation {
                 return quoteDto;
         }
 
-        // !
+        // ! to load the data into redis
         @Override
         public void refreshAllQuotes() {
                 List<StocksEntity> stocks = this.stocksRepository.findAll();
@@ -120,6 +120,19 @@ public class StockDataService implements StockOperation {
                                 Thread.sleep(1200);
                         } catch (InterruptedException e) {
                                 Thread.currentThread().interrupt();
+                        } catch (Exception e) {
+                                // skip failed symbol
+                        }
+                }
+        }
+
+        // ! to load the data into redis
+        @Override
+        public void refreshAllOhlc() {
+                List<StocksEntity> stocks = this.stocksRepository.findAll();
+                for (StocksEntity stock : stocks) {
+                        try {
+                                this.getStockOhlcDto(stock.getSymbol());
                         } catch (Exception e) {
                                 // skip failed symbol
                         }
@@ -185,7 +198,7 @@ public class StockDataService implements StockOperation {
 
                 // 3. Save to Redis for 24 hours
                 this.redisHelper.set(redisKey, stockohlcdto,
-                                Duration.ofHours(24));
+                                Duration.ofDays(365));
 
                 // ! 4. Set live % change
                 BigDecimal livePct = this.redisHelper.get("pct:" + symbol,

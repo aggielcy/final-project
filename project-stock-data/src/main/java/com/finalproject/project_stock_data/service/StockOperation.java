@@ -16,7 +16,8 @@ public interface StockOperation {
 
   QuoteDto getQuote(String symbol);
 
-  void refreshAllQuotes(); //!
+  void refreshAllQuotes(); //! to load all the data into redis to cache
+  void refreshAllOhlc(); //! to load all the data into redis to cache
 
   StockOhlcDTO getStockOhlcDto(String symbol);
 
