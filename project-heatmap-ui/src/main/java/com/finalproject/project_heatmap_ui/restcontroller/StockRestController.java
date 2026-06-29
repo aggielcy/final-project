@@ -1,5 +1,6 @@
 package com.finalproject.project_heatmap_ui.restcontroller;
 
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,6 +25,10 @@ public class StockRestController {
         return this.stockOperation.getStockOhlcDto(symbol);
     }
 
+    @GetMapping("/ui/cache/all")
+    public List<StockOhlcDTO> getAllStocksFromCache() {
+        return this.stockOperation.getAllStocksFromCache();
+    }
 
     @GetMapping("/ui/cache/symbols")
     public StockEntityDTO getSymbolFromCache() {

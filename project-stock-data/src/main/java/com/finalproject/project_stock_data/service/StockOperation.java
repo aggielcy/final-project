@@ -25,5 +25,8 @@ public interface StockOperation {
 
   StockOhlcDTO getStockOhlcFromCache(String symbol);
 
+  //!to get all StockOhlcDTO from redis to load quicker
+  List<StockOhlcDTO> getAllStocksFromCache();
+
 
 }

@@ -5,17 +5,8 @@ async function loadHeatmap() {
   stockDataMap = {};
   industryMap = {};
 
-  const res = await fetch('/ui/cache/symbols');
-  const data = await res.json();
-  const symbols = data.symbol.slice(0, 500);
-
-  const ohlcResults = await Promise.all(
-    symbols.map(symbol =>
-      fetch(`/ui/cache/ohlc?symbol=${symbol}`)
-        .then(r => r.json())
-        .catch(() => null)
-    )
-  );
+  const res = await fetch('/ui/cache/all');
+  const ohlcResults = await res.json();
 
   const labels = [];
   const parents = [];

@@ -3,6 +3,8 @@ package com.finalproject.project_stock_data.service.impl;
 
 import java.math.BigDecimal;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -126,17 +128,34 @@ public class StockDataService implements StockOperation {
                 }
         }
 
-        // ! to load the data into redis
+        // ! to load the data into redis in one json
         @Override
         public void refreshAllOhlc() {
                 List<StocksEntity> stocks = this.stocksRepository.findAll();
+                ArrayList<StockOhlcDTO> allStocks = new ArrayList<>();
                 for (StocksEntity stock : stocks) {
                         try {
-                                this.getStockOhlcDto(stock.getSymbol());
+                                StockOhlcDTO dto = this.getStockOhlcDto(
+                                                stock.getSymbol());
+                                if (dto != null) {
+                                        allStocks.add(dto);
+                                }
                         } catch (Exception e) {
                                 // skip failed symbol
                         }
                 }
+                this.redisHelper.set("all_stocks", allStocks,
+                                Duration.ofDays(365));
+        }
+
+        //!to get all StockOhlcDTO from redis to load quicker
+        @Override
+        public List<StockOhlcDTO> getAllStocksFromCache() {
+                StockOhlcDTO[] cached = this.redisHelper.get("all_stocks",
+                                StockOhlcDTO[].class);
+                if (cached == null)
+                        return List.of();
+                return Arrays.asList(cached);
         }
 
 
