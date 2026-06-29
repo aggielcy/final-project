@@ -1,6 +1,7 @@
 
 let stockDataMap = {};
 let industryMap = {};
+let navigating = false;
 
 async function loadHeatmap() {
   stockDataMap = {};
