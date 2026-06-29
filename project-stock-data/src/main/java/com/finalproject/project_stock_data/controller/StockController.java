@@ -33,10 +33,6 @@ public interface StockController {
   @GetMapping("/cache/ohlc/{symbol}")
   StockOhlcDTO getStockFromCache(@PathVariable String symbol);
 
-  //!read all stockohlcDTO in 1json
-  @GetMapping("/cache/all")
-  List<StockOhlcDTO> getAllStocksFromCache();
-
 
   // since stopping scheduler, need to cache in redis one time through postman
   @GetMapping("/cache/allquote")
@@ -45,9 +41,6 @@ public interface StockController {
   // since stopping scheduler, need to cache in redis one time through postman
   @GetMapping("/cache/allohlc")
   void refreshAllOhlc();
-
-
-
 }
 
 

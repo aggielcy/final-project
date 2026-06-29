@@ -47,12 +47,6 @@ public class StockControllerImpl implements StockController {
   }
 
   @Override
-  public List<StockOhlcDTO> getAllStocksFromCache() {
-    return this.stockOperation.getAllStocksFromCache();
-  }
-
-
-  @Override
   public StockOhlcDTO getStockFromCache(@PathVariable String symbol) {
     return this.stockOperation.getStockOhlcFromCache(symbol);
   }
@@ -63,7 +57,7 @@ public class StockControllerImpl implements StockController {
     this.stockOperation.refreshAllQuotes();
   }
 
-  // !
+  //!
   @Override
   public void refreshAllOhlc() {
     this.stockOperation.refreshAllOhlc();
