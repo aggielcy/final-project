@@ -135,8 +135,7 @@ public class StockDataService implements StockOperation {
                 ArrayList<StockOhlcDTO> allStocks = new ArrayList<>();
                 for (StocksEntity stock : stocks) {
                         try {
-                                StockOhlcDTO dto = this.getStockOhlcDto(
-                                                stock.getSymbol());
+                                StockOhlcDTO dto = this.redisHelper.get("stock:" + stock.getSymbol(), StockOhlcDTO.class);
                                 if (dto != null) {
                                         allStocks.add(dto);
                                 }
