@@ -1,3 +1,4 @@
+
 let stockDataMap = {};
 let industryMap = {};
 
@@ -99,9 +100,11 @@ async function loadHeatmap() {
   }, 300);
 
   document.getElementById('heatmap').on('plotly_click', function (eventData) {
+    if (navigating) return;
     const point = eventData.points[0];
     const isStock = point.parent !== '';
     if (isStock) {
+      navigating = true;
       window.location.href = `/stock.html?symbol=${point.label}`;
     }
   });
