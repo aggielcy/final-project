@@ -23,6 +23,8 @@ public class StockDataService implements StockOperation {
     private String domain;
     @Value("${app.stock-data.port}")
     private String port;
+    @Value("${app.stock-data.scheme}")
+    private String scheme;
 
 
     @Override
@@ -32,7 +34,7 @@ public class StockDataService implements StockOperation {
 
     @Override
     public StockOhlcDTO getStockOhlcDtoFromCache(String symbol) {
-        String url = UriComponentsBuilder.newInstance().scheme("http")
+        String url = UriComponentsBuilder.newInstance().scheme(this.scheme)
                 .host(this.domain).port(this.port).path("/cache/ohlc/" + symbol)
                 .toUriString();
         System.out.println("url=" + url);
@@ -69,7 +71,7 @@ public class StockDataService implements StockOperation {
     public StockOhlcDTO getStockOhlcDto(String symbol) {
 
         String url = UriComponentsBuilder.newInstance() //
-                .scheme("http") //
+                .scheme(this.scheme) //
                 .host(this.domain) //
                 .port(this.port)//
                 .path("/symbol/" + symbol).toUriString();
@@ -106,7 +108,7 @@ public class StockDataService implements StockOperation {
     public StockEntityDTO getSymbol() {
 
         String url = UriComponentsBuilder.newInstance() //
-                .scheme("http") //
+                .scheme(this.scheme) //
                 .host(this.domain) //
                 .port(this.port)//
                 .path("/data/symbol") //

@@ -6,3 +6,4 @@ app:
   stock-data:
     domain: ${STOCK_DATA_DOMAIN:localhost}
     port: ${STOCK_DATA_PORT:8102}
+    scheme: ${STOCK_DATA_SCHEME:http}
